@@ -17,51 +17,42 @@ items.push(new Item("Conjured Mana Cake", 3, 6));
 
 export const updateQuality = () => {
   for (let item of items) {
-    if (
-      item.name != "Aged Brie" &&
-      item.name != "Backstage passes to a TAFKAL80ETC concert"
-    ) {
-      if (item.quality > 0) {
-        if (item.name != "Sulfuras, Hand of Ragnaros") {
-          item.quality = item.quality - 1;
-        }
-      }
-    } else {
-      if (item.quality < 50) {
-        item.quality = item.quality + 1;
-        if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
-          if (item.sellIn < 11) {
-            if (item.quality < 50) {
-              item.quality = item.quality + 1;
-            }
-          }
-          if (item.sellIn < 6) {
-            if (item.quality < 50) {
-              item.quality = item.quality + 1;
-            }
-          }
-        }
-      }
+    if (item.name === "Sulfuras, Hand of Ragnaros") {
+      item.sellIn = item.sellIn
+      item.quality = item.quality
+    } else if (item.name === "Backstage passes to a TAFKAL80ETC concert" && item.sellIn > 10) {
+      item.quality--
+      item.sellIn--
+    } else if (item.name === "Backstage passes to a TAFKAL80ETC concert" && item.sellIn > 5 && item.sellIn <= 10) {
+      item.quality += 2 
+      item.sellIn--
+    } else if (item.name === "Backstage passes to a TAFKAL80ETC concert" && item.sellIn <= 5 && item.sellIn > 0) {
+      item.quality += 3
+      item.sellIn--
+    } else if (item.name === "Backstage passes to a TAFKAL80ETC concert" && item.sellIn <= 0) {
+      item.quality = 0
+      item.sellIn--
+    } else if (item.name === "Conjured" && item.sellIn < 0) {
+      item.quality -= 4
+      item.sellIn--
+    } else if (item.name === "Conjured") {
+      item.quality -= 2
+      item.sellIn--
+    } else if (item.name === "Aged Brie") {
+      item.quality++
+      item.sellIn--
+    } else if (item.sellIn < 0) {
+      item.quality -= 2
+      item.sellIn--
+    } else if (item.quality >= 0 && item.quality <= 50) {
+      item.quality--
+      item.sellIn--
     }
-    if (item.name != "Sulfuras, Hand of Ragnaros") {
-      item.sellIn = item.sellIn - 1;
+    if (item.quality < 0) {
+      item.quality = 0
     }
-    if (item.sellIn < 0) {
-      if (item.name != "Aged Brie") {
-        if (item.name != "Backstage passes to a TAFKAL80ETC concert") {
-          if (item.quality > 0) {
-            if (item.name != "Sulfuras, Hand of Ragnaros") {
-              item.quality = item.quality - 1;
-            }
-          }
-        } else {
-          item.quality = item.quality - item.quality;
-        }
-      } else {
-        if (item.quality < 50) {
-          item.quality = item.quality + 1;
-        }
-      }
+    if (item.quality > 50 && item.name !== "Sulfuras, Hand of Ragnaros") {
+      item.quality = 50
     }
-  }
-};
+  }  
+}
